@@ -11,7 +11,6 @@ services:
       - "5432:5432"
     volumes:
       - dados-banco2:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
 
   backend:
     build:
@@ -31,7 +30,6 @@ services:
           echo 'Waiting for the database...';
           sleep 1;
         done;
-        npx prisma migrate dev --name init;
         npm run back;
       "
 
@@ -47,3 +45,4 @@ services:
 
 volumes:
   dados-banco2:
+    external: true
