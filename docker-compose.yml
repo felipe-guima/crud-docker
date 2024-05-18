@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: pgcompose
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker1
+    ports:
+      - "5432:5432"
+    volumes:
+      - dados-banco2:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  backend:
+    build:
+      context: ./server
+    container_name: backend
+    environment:
+      - PORT=8800
+      - DATABASE_URL=postgresql://postgres:docker1@postgres:5432/nodecrud?schema=public
+    ports:
+      - "8800:8800"
+    depends_on:
+      - postgres
+    command: >
+      sh -c "
+        while ! nc -z postgres 5432;
+        do
+          echo 'Waiting for the database...';
+          sleep 1;
+        done;
+        npx prisma migrate dev --name init;
+        npm run back;
+      "
+
+  frontend:
+    build:
+      context: ./front
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+      - backend
+
+volumes:
+  dados-banco2:
