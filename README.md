@@ -14,14 +14,15 @@ O intuito é apresentar um CRUD funcional com todas as partes da aplicação pre
 
 **Crie o volume de persistência Docker**:
 1 - Execute o seguinte comando para criar o volume:
-`   2 - Verifique a criação do volume com:
-    `
+
+2 - Verifique a criação do volume com:
+  
 docker volume ls
-```
+
 
 **Baixando e executando o projeto**:
 1 - Baixe do repositório:
-   git clone https://github.com/felipe-guima/crud-docker
+  git clone https://github.com/felipe-guima/crud-docker
 
 ou baixe o ZIP.
   2 - Certifique-se de ter o Docker instalado.
